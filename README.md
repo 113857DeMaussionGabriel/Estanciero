@@ -1,57 +1,136 @@
-# Estanciero
+# TP Grupal: El Estanciero
+- **Integrantes**: 
+     - 113857 De Maussion, Gabriel
+     - 113973 Luparia Mothe, Agustin
+     - 113895 Ortiz, Pablo
+     - 114320 Ferreyra, Fernando Gabriel
+     - 113174 Gregorutti, Stefano
+     - 114179 Leticia, Castro
+     - 114143 Nadia, Gobetto
+## Clases
 
-## Consignas
-...
+### 1. **Estanciero**
+ - Funciona como clase principal, se encarga de iniciar/cargar las partidas.
+ - __Atributos__:
+  - `partida` : Un objeto de clase Tablero que contiene la logica de juego que se lleva a cabo dentro de la partida. 
+ - __Métodos__:
+  - `CrearTablero()` : Consulta si se desea iniciar una nueva partida, en cuyo caso se cargara un tablero en blanco, se agregan jugadores "virtuales" en base a la dificultad y se ordenan los jugadores, si no, se puede cargar una partida ya empezada desde la base de datos.
+  - `OrdenarJugadores()` : Ordena la lista de jugadores en el Tablero en base a una tirada de dados inicial de mayor a menor y muestra dicho orden por consola.
+  - `SeleccionarDificultad()` : Permite establecer el nivel de dificultad del juego, agregando jugadores virtuales con distintos perfiles en la partida.
+  - `CargarTablero()` : Consulta, interpreta y carga los datos de una partida en la base de datos ya empezada para establecerla como la actual.
+  - `AgregarJugador()` : Agrega al jugador e instancia los distintos perfiles de jugadores virtuales para sumarlos a la lista de jugadores.
 
-## Reglas del juego
 
-### Zonas: Provincias (Norte, Centro, Sur)
-Cada una de estas tiene su correspondiente escritura en la que figuran los alquileres de Campos, Chacras y Estancias. La venta de Chacras y Estancias es exclusiva entre el Propietario y el Banco, no así las escrituras de propiedades que también pueden ser vendidas y compradas directamente entre los jugadores.
+### 2. **Tablero**
+   - Contiene la mayor parte de la logica del juego, siendo el equivalente a los datos de la partida.
+   - __Atributos__:
+        - `jugadores` : Una lista de objeto "Jugador" ordenada en base a los turnos.
+        - `casillas` : Una lista de las 42 casillas en las que los jugadores pueden caer en el tablero.
+        - `dado` : Una instancia de la clase, para llamar a sus metodos y recuperar el valor de cada dado.
+        - `cartasSuerte` : Una lista de las 16 cartas posibles para cuando el jugador tenga que levantar
+        - `cartasDestino` : Una lista de las 16 cartas posibles para cuando el jugador tenga que levantar
+        - `cantidadGanadora` : Un valor entero que al alcanzar un jugador indicara el fin de la partida.
+   - __Métodos__:
+        - `Turno()` : Gestiona el turno de cada jugador, decidiendo si puede comprar, mejorar o levantar cartas entre otras.
+        - `BalanceJugador()` : Verifica y actualiza el balance de los jugadores, sumando o restando montos.
+        - `EliminarJugador()` : Remueve un jugador de la lista en caso de que este en bancarrota.
+        - `MostrarEstado()` : Muestra el estado actual del juego.
+        - `TerminarPartida()` : Finaliza el juego y determina jugador ganador.
+        - `MoverJugador()` : Mueve el jugador por el tablero según el resultado del dado o cartas.
+        - `PagarAlquiler()` : Gestiona el pago de alquileres cuando un jugador cae en una propiedad ajena.
+        - `LevantarCarta()` : Levanta y usa una carta de la lista para luego enviarla al final del mazo.
+        - `MesclarMazo()` : Mezcla la lista de cartas antes de iniciar la partida.
 
-### Ferrocarriles y Compañías
-• Ver las indicaciones de las escrituras de las mismas.
 
-### Suerte o Destino
-Cuando un jugador llega a una casilla con la denominación Suerte o Destino tiene que levantar la tarjeta correspondiente y luego de cumplir lo que indica, volverá a poner la misma debajo del mazo. En caso de que toque una tarjeta de retroceder "3" casilleros y caer en la propiedad de otro jugar se debe abonar lo indicado en la tarjeta de la propiedad.
+### 3. **Casilla**
+   - Es la clase padre con atributos comunes entre los distintos tipos de casillas.
+   - __Atributos__:
+        - `id` : Identificador de la casilla.
+        - `nombre` : Nombre de la casilla.
 
-### Premios e Impuestos
-Estos son cobrados o pagados por el Banco. El jugador que olvida pedir el pago de los Premios del Banco antes de que los dados vuelvan a ser tirados pierde el derecho a cobrarlos.
 
-### Comisaría
-Un jugador preso tiene que permanecer en la casilla comisaría •si cae en la casilla no se le considera preso
+### 4. **Carta**
+   - Clase encargada de almacenar los datos de una carta y mostrar las acciones que se deben realizar al levantarse.
+   - __Atributos__:
+        - `descripcion` : Cadena de caracteres a modo de mensaje con el efecto de la carta. 
+   - __Metodos__:
+        - `UsarCarta` : Mostrar por consola la descripcion de la carta y devuelve 2 valores, el efecto de la carta (mover jugador, dar dinero, etc) ademas de la intensidad del mismo (mover 1 o 2 casillas).
 
-### Descanso
-Al llegar a esta casilla, el jugador tiene derecho, si así lo desea, a quedarse por dos turnos, siempre que no saque doble en los dados. Es condición avisar antes de tirar los dados los deseos de quedarse.
 
-### Libre Estacionamiento
-Está casilla no tiene otro significado que el expuesto en la misma, no dado derecho a quedarse, en el estacionamiento no se paga si se cae en las provincia del participante en el casillero
+### 5. **Especial** (hereda de **Casilla**)
+   - **por definir**
+   - __Atributos__:
+        - `descripcion` : **por definir**
+   - __Metodos__:
+        - `Efecto` : **por definir**
 
-### Doble en Dados
-• Quien saca doble en los dados juega de nuevo. Si se repite tres veces seguidas tiene que ir preso por abuso. No tira nuevamente hasta que llegue su turno y deberá devolver toda aquella cuenta que cobró del banco
 
-### Banco
-Al iniciarse el juego, el Banco es propietario exclusivo de las Zonas, Ferrocarriles, Compañías, Estancias y Chacras. Estos pueden adquirirse a los precios indicados en el tablero o en las escrituras (chacras o estancias).El Banco tiene la obligación de facilitar valores en Hipotecas sobre Campos, Ferrocarriles y Compañías a los que lo soliciten por la cantidad indicada al dorso de las Escrituras, cobrando, el 10% de interés por adelantado.
+### 6. **Propiedad** (hereda de **Casilla**)
+   - Clase padre para todas aquellos tipos de casillas que sean comprables e imponen un alquiler sobre los jugadores que caigan en ellas.
+   - __Atributos__:
+        - `tipo` : Una cadena de caracteres (O una ennumeracion) para acelerar la busqueda y filtro entre las variantes de propiedades (Escritura, Ferrocarril y Compañia).
+        - `precio` : El importe que se debe abonar para que un jugador adquiera la propiedad de la casilla.
+        - `alquileres` : Una lista de valores enteros que varia segun el nivel de la escritura o cantidad de propiedades iguales que posea el dueño de la casilla.
+        - `valorHipoteca` : El monto que se le otorgara al jugador si desea hipotecar la propiedad.
+        - `hipotecado` : Un booleano para comprobar el estado de la propiedad.
+   - __Métodos__:
+        - `CalcularAlquiler()` : En base a los valores de alquiler se encarga de devolver un entero con el monto que se le debe cobrar al jugador que caiga en la casilla.
+        - `Hipotecar()` : Hipoteca la propiedad.
+        - `Deshipotecar()` : Levanta la hipoteca de la propiedad.
 
-### Chacras
-Las Chacras están representadas por 32 fichas (tipo casa) que conforman este juego. Estas son propiedades que adquiridas y colocadas sobre los Campos (Zonas) aumentan el valor a favor del Propietario siendo posible adquirirlas solo del Banco. Para poder adquirir Chacras es necesario tener una provincia completa ya sea que la posea un mismo jugador o en forma colectiva. Los Ferrocarriles y Compañías no pueden ser poblados por Chacras o Estancias. Las Chacras se ponen sobre los Campos (Zonas), siendo permitido solo una Chacra más en unos Campos, que en otros del mismo Propietario.(ej. si se tiene CBA: se pueden poner 2 chacras en cada campo, 2 en zona norte, 2 en zona centro y 2 en zona sur. si se adquieren 2 chacras más, no se pueden poner esas 2 chacras en zona norte o centro o sur. se tiene que poner una en cada uno de los campos. esto es para que no aumente significativamente el valor de un solo campo sino que aumente paulatinamente en todos.) • No se pueden tener 4 Chacras en un campo y dos en otro, pero si 4 en uno y 3 en otro. No se pueden tener más de 4 chacras en un campo. El valor de las chacras está en las escrituras.
 
-### Estancias
-Están representada por 12 fichas (tipo casa) de un tamaño mayor a las Chacras y de otro color. Para tener una Estancias en un Campo hay que tener primeramente 4 Chacras.
+### 7. **Escritura** (Hereda de **Propiedad**)
+   - Especifica detalles de quellas propiedades "escrituras" comprables (22 en total) que pueden ser mejoradas agregándoles Chacras o Estancias.
+   - __Atributos__:
+        - `provincia`: String con la ubicación de la propiedad.
+        - `zona`: String con la zona específica dentro de la provincia.
+        - `nivel`: valor entero que indica el nivel de desarrollo de la propiedad (número de Chacras/Estancias).
+   - __Métodos sobreescritos__:
+        - `CalcularAlquiler()` : Devuelve un numero entero con el monto que se deberia cobrar al jugador que caiga en la casilla teniendo en cuenta el nivel (cantidad de chacras/estancias) que esten en la casilla.
 
-Si un jugador posee suficiente capital puede comprar Estancias sin necesidad de haber comprado Chacras previamente. No se puede tener más de una estancia por campo. Al adquirir una estancia se le devuelven al banco las chacras existentes como parte de pago y además, la diferencia que corresponde. • Nota: Teniendo problemas financieros, uno puede venderle al Banco, chacras y estancias, pero solo a la mitad del valor pagado.
 
-### Falta de Chacras y Estancias
-En caso de que estas no alcancen para cubrir las demandas, el jugador que tiene el turno tiene preferencia.
+### 8. **Compañia** (Hereda de **Propiedad**)
+   - Sobreescritura para las 3 casillas que utilizan atributos y metodos de la clase padre y sobreescribe aquellos que sean necesarios para el calculo del alquiler.
+   - __Métodos sobreescritos__:
+        - `CalcularAlquiler()` : Devuelve un numero entero con el monto que se deberia cobrar al jugador que caiga en la casilla teniendo en cuenta la cantidad de compañias que posea el dueño de la casilla haciendo uso  del atributo de `Alquileres` y una tirada de dados.
 
-### Venta de Propiedades
-Los campos, ferrocarriles y compañías pueden ser comprados y vendidos entre los jugadores. Este aclara cuanta cantidad es mínima para la venta del mismo , no así las chacras y estancias que solo pueden ser vendidas nuevamente al Banco y a la mitad de su valor.
 
-### Hipoteca
-El Banco es el único que puede facilitarle billetes a los jugadores y al valor indicado al dorso de las escrituras. Las Chacras y Estancias no son hipotecables. Si un Campo hipotecado es vendido a otro jugador, este abonará el 10% de intereses al Banco en el momento de la transacción y si no levanta la hipoteca inmediatamente, tendrá que pagar nuevamente el 10% al deshipotecar. Sobre los Campos, Ferrocarriles y Compañías no se percibe alquiler.No se puede comprarle al banco una hipoteca de otro jugador
+### 9. **Ferrocarril** (Hereda de **Propiedad**)
+   - Detalles para las 4 casillas que utilizan atributos y metodos de la clase padre y sobreescribe aquellos que sean necesarios para el calculo del alquiler.
+   - __Métodos sobreescritos__:
+        - `CalcularAlquiler()` : Devuelve un numero entero con el monto que se deberia cobrar al jugador que caiga en la casilla teniendo en cuenta la cantidad de ferrocarriles que posea el dueño de la casilla haciendo uso  del atributo de `Alquileres`.
 
-### Falta de Billetes
-Si a un jugador le faltan billetes para pagar alquileres o impuestos tendrá que vender primeramente sus estancias o chacras al Banco, hipotecar sus propiedades o entregar estas al acreedor.
 
-No se permite prestarse billetes entre los jugadores.
+### 10. **Jugador**
+   - Clase para el usuario, los atributos ayudan a llevar registro de su progreso y los metodos le habilitan a realizar distintas acciones durante su turno.
+   - __Atributos__:
+        - `nombre` : Identificacion del jugador/jugador virtual dentro del tablero.
+        - `dinero` : Un valor entero que representa el capital del que dispone el jugador.
+        - `posicion` : Un numero entero que indica la casilla sobre la que el jugador se encuentra parado en el tablero
+        - `propiedades` : Una lista de enteros que hace referencia a las propiedades que el jugador posee de la lista de casillas (se almacena el indice de la casilla en la lista).
+   - __Métodos__:
+        - `Comprar()`: Compra propiedades.
+        - `Vender()`: Vende propiedades.
+        - `Mejorar()` : Permite la mejora de las escrituras que posea el jugador agregando chacras o cambiandolas por una estancia.
+        - `Hipotecar()`: Hipoteca propiedades.
+        - `Deshipotecar()`: Levanta hipotecas.
 
-Si después de vender sus propiedades a un jugador, de todos modos no le alcanza, es declarado en quiebra y debe abandonar el juego.
+
+### 11. **JugadorVirtual** (hereda de **Jugador**)
+   - Es una clase abstracta de la que derivan diferentes estrategias de juego (`PerfilAgresivo`, `PerfilConservador`, `PerfilEquilibrado`).
+   - __Atributos__:
+        - `provinciasPrioritarias` : Una lista de "String"s con los nombres de las provincias que el jugador virtual prioriza al comprar.
+   - __Métodos sobreescritos__
+        - `Comprar()` : Compra propiedades en base a las preferencias del perfil.
+        - `Vender()`: Vende propiedades si llegase a ser necesario.
+        - `Mejorar()` : Permite la mejora de las escrituras que posea el jugador agregando chacras o cambiandolas por una estancia basandose en las preferencias del perfil.
+
+
+### 12. **Dado**
+   - Clase encargada de almacenar las tiradas del 1 al 6 para permitir el movimiento de los jugadores entre otras cosas.
+   - __Atributos__:
+        - `tirada1` : Numero entero del 1 al 6 para el primer dado.
+        - `tirada2` : Numero entero del 1 al 6 para el segundo dado.
+   - __Metodos__:
+        - `TirarDados()` : Devuelve dos numeros aleatorios del 1 al 6  y los asigna en las variables `tirada1` y `tirada2`.
+
