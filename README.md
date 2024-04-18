@@ -10,15 +10,15 @@
 ## Clases
 
 ### 1. **Estanciero**
- - Funciona como clase principal, se encarga de iniciar/cargar las partidas.
- - __Atributos__:
-  - `partida` : Un objeto de clase Tablero que contiene la logica de juego que se lleva a cabo dentro de la partida. 
+- Funciona como clase principal, se encarga de iniciar/cargar las partidas.
+- __Atributos__:
+     - `partida` : Un objeto de clase Tablero que contiene la logica de juego que se lleva a cabo dentro de la partida. 
  - __Métodos__:
-  - `CrearTablero()` : Consulta si se desea iniciar una nueva partida, en cuyo caso se cargara un tablero en blanco, se agregan jugadores "virtuales" en base a la dificultad y se ordenan los jugadores, si no, se puede cargar una partida ya empezada desde la base de datos.
-  - `OrdenarJugadores()` : Ordena la lista de jugadores en el Tablero en base a una tirada de dados inicial de mayor a menor y muestra dicho orden por consola.
-  - `SeleccionarDificultad()` : Permite establecer el nivel de dificultad del juego, agregando jugadores virtuales con distintos perfiles en la partida.
-  - `CargarTablero()` : Consulta, interpreta y carga los datos de una partida en la base de datos ya empezada para establecerla como la actual.
-  - `AgregarJugador()` : Agrega al jugador e instancia los distintos perfiles de jugadores virtuales para sumarlos a la lista de jugadores.
+     - `CrearTablero()` : Consulta si se desea iniciar una nueva partida, en cuyo caso se cargara un tablero en blanco, se agregan jugadores "virtuales" en base a la dificultad y se ordenan los jugadores, si no, se puede cargar una partida ya empezada desde la base de datos.
+     - `OrdenarJugadores()` : Ordena la lista de jugadores en el Tablero en base a una tirada de dados inicial de mayor a menor y muestra dicho orden por consola.
+     - `SeleccionarDificultad()` : Permite establecer el nivel de dificultad del juego, agregando jugadores virtuales con distintos perfiles en la partida.
+     - `CargarTablero()` : Consulta, interpreta y carga los datos de una partida en la base de datos ya empezada para establecerla como la actual.
+     - `AgregarJugador()` : Agrega al jugador e instancia los distintos perfiles de jugadores virtuales para sumarlos a la lista de jugadores.
 
 
 ### 2. **Tablero**
